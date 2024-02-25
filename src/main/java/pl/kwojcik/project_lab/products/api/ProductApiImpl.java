@@ -6,7 +6,6 @@ import pl.kwojcik.project_lab.gen.api.ProductsApi;
 import pl.kwojcik.project_lab.gen.api.dto.ProductDTO;
 import pl.kwojcik.project_lab.products.ProductService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

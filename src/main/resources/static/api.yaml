@@ -88,8 +88,30 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
+  /login:
+    post:
+      operationId: login
+      description: login
+      summary: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginCmd'
+      responses:
+        200:
+          description: ok
 components:
   schemas:
+    LoginCmd:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 100
+        password:
+          type: string
+          minLength: 100
     Product:
       type:
         object
