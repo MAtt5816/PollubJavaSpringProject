@@ -1,0 +1,11 @@
+version: "2.0"
+services:
+
+
+  postgres:
+    image: postgres:13.2
+    container_name: postgres-javaee-lab
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env

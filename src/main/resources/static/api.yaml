@@ -1,0 +1,111 @@
+openapi: 3.0.2
+servers:
+  - url: /v3
+info:
+  version: 1.0.17
+  title: Swagger Petstore - OpenAPI 3.0
+  termsOfService: 'http://swagger.io/terms/'
+
+paths:
+  /products/{productId}:
+    get:
+      operationId: getProduct
+      description: get product
+      summary:  get product
+      parameters:
+        - name: productId
+          description: product id
+          in: path
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    delete:
+      operationId: deleteProduct
+      description: deleteProduct
+      summary: deleteProduct
+      parameters:
+        - name: productId
+          description: product id
+          in: path
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        200:
+          description: ok
+  /products:
+    post:
+      operationId: createProduct
+      description: createProduct
+      summary: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    put:
+      operationId: updateProduct
+      description: updateProduct
+      summary:  updateProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    get:
+      operationId: getProducts
+      description: get products
+      summary: get products
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+components:
+  schemas:
+    Product:
+      type:
+        object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          maxLength: 255
+        price:
+          type: number
+          format: float64
+        description:
+          type: string
+          maxLength: 30000
+      required:
+        - id
+        - name
+        - price
+        - description
