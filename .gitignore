@@ -35,3 +35,5 @@ out/
 
 ### VS Code ###
 .vscode/
+/src/main/java/pl/kwojcik/project_lab/gen/api/
+/.openapi-generator/
