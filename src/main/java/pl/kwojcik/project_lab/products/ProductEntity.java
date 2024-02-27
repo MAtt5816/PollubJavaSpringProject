@@ -18,4 +18,8 @@ public class ProductEntity {
     private String name;
     private BigDecimal price;
     private String description;
+
+    public ProductEntity(Long id) {
+        this.id = id;
+    }
 }

@@ -4,22 +4,32 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.kwojcik.project_lab.user.model.AppPermission;
+import pl.kwojcik.project_lab.user.model.AppRole;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class AppUser implements UserDetails {
     private final String username;
     private final String passwordHash;
+    private final AppRole appRole;
 
-    public AppUser(String username, String passwordHash) {
+    public AppUser(String username, String passwordHash, AppRole role) {
         this.username = username;
         this.passwordHash = passwordHash;
+        this.appRole = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("USER"));
+        return this.appRole.getPermissions().stream()
+                .map(AppPermission::name)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override

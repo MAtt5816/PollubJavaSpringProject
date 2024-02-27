@@ -2,7 +2,6 @@ package pl.kwojcik.project_lab.auth;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import jakarta.annotation.PostConstruct;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.kwojcik.project_lab.gen.api.dto.LoginCmdDTO;
-import pl.kwojcik.project_lab.user.UserEntity;
 import pl.kwojcik.project_lab.user.UserService;
 
 import java.util.Date;
@@ -57,7 +55,10 @@ public class AuthService implements AuthenticationManager  {
                 .verify(jwt);
 
         var user = userService.loadUserByUsername(username);
-        return UsernamePasswordAuthenticationToken.authenticated(user.getUsername(), user.getPassword(),
-                List.of(new SimpleGrantedAuthority("USER")));
+        return UsernamePasswordAuthenticationToken.authenticated(
+                user.getUsername(),
+                user.getPassword(),
+                user.getAuthorities()
+        );
     }
 }

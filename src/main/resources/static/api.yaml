@@ -88,6 +88,68 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
+  /orders:
+    post:
+      operationId: createOrder
+      description: create order
+      summary: create order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewOrder'
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+    get:
+      operationId: getOrders
+      description: get orders
+      summary: get orders
+      parameters:
+        - in: query
+          name: pageIndex
+          schema:
+            type: integer
+            format: int64
+            default: 0
+          required: false
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            format: int64
+            default: 50
+            minimum: 1
+            maximum: 1000
+          required: false
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+  /orders/{orderId}:
+    delete:
+      operationId: deleteOrder
+      description: delete order
+      summary: delete order
+      parameters:
+        - name: orderId
+          in: path
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        200:
+          description: ok
   /login:
     post:
       operationId: login
@@ -101,8 +163,35 @@ paths:
       responses:
         200:
           description: ok
+  /user:
+    post:
+      operationId: createUser
+      description: create user
+      summary: create user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginCmd'
+      responses:
+        200:
+          description: ok
 components:
   schemas:
+    CreateUserCmd:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 255
+        password:
+          type: string
+          minLength: 10
+          maxLength: 255
+      required:
+        - username
+        - password
     LoginCmd:
       type: object
       properties:
@@ -112,6 +201,52 @@ components:
         password:
           type: string
           minLength: 100
+    NewOrder:
+      type: object
+      properties:
+
+        orderPositions:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderPosition'
+          minItems: 1
+          maxItems: 1000
+      required:
+        - customerId
+        - orderPositions
+    Order:
+      allOf:
+        - $ref: '#/components/schemas/NewOrder'
+        - type: object
+          properties:
+            customerId:
+              example: 2
+              type: integer
+              format: int64
+            id:
+              type: integer
+              format: int64
+              minimum: 1
+            creationDate:
+              type: string
+              format: date-time
+          required:
+            - id
+            - creationDate
+    OrderPosition:
+      type: object
+      properties:
+        productId:
+          example: 1
+          type: integer
+          format: int64
+        amount:
+          example: 2
+          type: integer
+          format: int32
+      required:
+        - productId
+        - amount
     Product:
       type:
         object

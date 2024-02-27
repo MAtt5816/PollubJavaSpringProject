@@ -1,4 +1,4 @@
-package pl.kwojcik.project_lab.user;
+package pl.kwojcik.project_lab.user.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +16,7 @@ public class UserEntity {
     private Long id;
     private String username;
     private String passwordHash;
-
+    private AppRole role;
 
 
 }
