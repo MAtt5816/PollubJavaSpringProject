@@ -1,6 +1,8 @@
 package pl.kwojcik.project_lab.products.api;
 
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RestController;
 import pl.kwojcik.project_lab.gen.api.ProductsApi;
 import pl.kwojcik.project_lab.gen.api.dto.ProductDTO;
@@ -17,6 +19,7 @@ public class ProductApiImpl implements ProductsApi {
     }
 
     @Override
+    @RolesAllowed("ROLE_USER")
     public ResponseEntity<ProductDTO> createProduct(ProductDTO productDTO) {
         var dto = this.productService.createProduct(productDTO);
         return ResponseEntity.ok(dto);

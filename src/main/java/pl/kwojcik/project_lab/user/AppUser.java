@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class AppUser implements UserDetails, Authentication {
+public class AppUser implements UserDetails {
     private final String username;
     private final String passwordHash;
 
@@ -20,31 +20,6 @@ public class AppUser implements UserDetails, Authentication {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("USER"));
-    }
-
-    @Override
-    public Object getCredentials() {
-        return null;
-    }
-
-    @Override
-    public Object getDetails() {
-        return null;
-    }
-
-    @Override
-    public Object getPrincipal() {
-        return null;
-    }
-
-    @Override
-    public boolean isAuthenticated() {
-        return false;
-    }
-
-    @Override
-    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-
     }
 
     @Override
@@ -77,8 +52,4 @@ public class AppUser implements UserDetails, Authentication {
         return true;
     }
 
-    @Override
-    public String getName() {
-        return null;
-    }
 }
