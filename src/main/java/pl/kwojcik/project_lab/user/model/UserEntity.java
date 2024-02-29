@@ -18,5 +18,9 @@ public class UserEntity {
     private String passwordHash;
     private AppRole role;
 
-
+    public UserEntity(String username, String passwordHash, AppRole role) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.role = role;
+    }
 }

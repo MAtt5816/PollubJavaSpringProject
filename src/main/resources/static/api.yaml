@@ -172,7 +172,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginCmd'
+              $ref: '#/components/schemas/CreateUserCmd'
       responses:
         200:
           description: ok
@@ -185,13 +185,18 @@ components:
           type: string
           minLength: 3
           maxLength: 255
+          example: bob
         password:
           type: string
           minLength: 10
           maxLength: 255
+          example: StrongPassword123
+        role:
+          $ref: '#/components/schemas/UserRole'
       required:
         - username
         - password
+        - role
     LoginCmd:
       type: object
       properties:
@@ -201,6 +206,12 @@ components:
         password:
           type: string
           minLength: 100
+    UserRole:
+      type: string
+      enum:
+        - ADMIN
+        - CUSTOMER
+      example: CUSTOMER
     NewOrder:
       type: object
       properties:

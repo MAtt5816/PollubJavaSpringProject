@@ -26,10 +26,12 @@ public class AppUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.appRole.getPermissions().stream()
+        var authorities =  this.appRole.getPermissions().stream()
                 .map(AppPermission::name)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toCollection(ArrayList::new));
+        authorities.add(new SimpleGrantedAuthority(this.appRole.name()));
+        return authorities;
     }
 
     @Override
