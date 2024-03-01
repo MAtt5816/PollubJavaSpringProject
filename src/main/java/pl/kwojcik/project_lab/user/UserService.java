@@ -25,13 +25,17 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = userRepository.findByUsername(username).orElseThrow();
+        var user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("username: %s not found".formatted(username)));
         return new AppUser(user.getUsername(), user.getPasswordHash(), user.getRole());
-
     }
 
     @PreAuthorize("cmd.role.name().equals('CUSTOMER') or hasAnyRole('ADMIN')")
     public UserDetails createUser(CreateUserCmdDTO cmd) {
+        return this.createUserNoAuthChecked(cmd);
+    }
+
+    public UserDetails createUserNoAuthChecked(CreateUserCmdDTO cmd) {
         var passwHash = passwordEncoder.encode(cmd.getPassword());
         var appRole = AppRole.valueOf(cmd.getRole().name());
         var user = new UserEntity(cmd.getUsername(), passwHash, appRole);

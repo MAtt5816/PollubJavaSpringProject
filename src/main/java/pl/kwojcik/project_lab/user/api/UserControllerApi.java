@@ -14,8 +14,6 @@ public class UserControllerApi implements UserApi {
         this.userService = userService;
     }
 
-
-    @Override
     public ResponseEntity<Void> createUser(CreateUserCmdDTO createUserCmdDTO) {
         userService.createUser(createUserCmdDTO);
         return ResponseEntity.ok().build();

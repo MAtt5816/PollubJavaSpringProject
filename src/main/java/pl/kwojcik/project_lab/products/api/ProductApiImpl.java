@@ -1,12 +1,12 @@
 package pl.kwojcik.project_lab.products.api;
 
-import jakarta.annotation.security.RolesAllowed;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RestController;
 import pl.kwojcik.project_lab.gen.api.ProductsApi;
 import pl.kwojcik.project_lab.gen.api.dto.ProductDTO;
 import pl.kwojcik.project_lab.products.ProductService;
+import pl.kwojcik.project_lab.user.model.AppPermission;
 
 import java.util.List;
 
@@ -19,13 +19,14 @@ public class ProductApiImpl implements ProductsApi {
     }
 
     @Override
-    @RolesAllowed("ROLE_USER")
+    @Secured(AppPermission.ROLE_PRODUCT_MODIFY)
     public ResponseEntity<ProductDTO> createProduct(ProductDTO productDTO) {
         var dto = this.productService.createProduct(productDTO);
         return ResponseEntity.ok(dto);
     }
 
     @Override
+    @Secured(AppPermission.ROLE_PRODUCT_MODIFY)
     public ResponseEntity<Void> deleteProduct(Long productId) {
         this.productService.deleteProduct(productId);
         return ResponseEntity.ok().build();
@@ -44,6 +45,7 @@ public class ProductApiImpl implements ProductsApi {
     }
 
     @Override
+    @Secured(AppPermission.ROLE_PRODUCT_MODIFY)
     public ResponseEntity<ProductDTO> updateProduct(ProductDTO productDTO) {
         var dto = this.productService.updateProduct(productDTO);
         return ResponseEntity.ok(dto);
