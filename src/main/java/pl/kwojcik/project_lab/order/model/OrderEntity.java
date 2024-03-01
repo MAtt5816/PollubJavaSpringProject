@@ -2,7 +2,9 @@ package pl.kwojcik.project_lab.order.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import pl.kwojcik.project_lab.user.model.UserEntity;
@@ -11,7 +13,8 @@ import java.time.OffsetDateTime;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class OrderEntity {
 

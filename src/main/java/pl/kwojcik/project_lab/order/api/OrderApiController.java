@@ -22,7 +22,7 @@ public class OrderApiController implements OrdersApi {
     }
 
     @Override
-    @PreAuthorize("#authentication.authenticated")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<OrderDTO> createOrder(NewOrderDTO newOrderDTO) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         var createdOrder = orderService.createOrder(newOrderDTO, auth);
@@ -30,17 +30,17 @@ public class OrderApiController implements OrdersApi {
     }
 
     @Override
-    @PreAuthorize("#authentication.authenticated")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> deleteOrder(Long orderId) {
         this.orderService.deleteOrder(orderId);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    @PreAuthorize("#authentication.authenticated")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<OrderDTO>> getOrders(Long pageIndex, Long pageSize) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth.isAuthenticated()) {
+        if (!auth.isAuthenticated()) {
             throw new UsernameNotFoundException("");
         }
         var orders = this.orderService.getClientOrders(auth);

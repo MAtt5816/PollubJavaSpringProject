@@ -74,6 +74,7 @@ public class OrderService {
 
     private OrderDTO mapToOrderDTO(OrderEntity entity) {
         var dto = new OrderDTO()
+                .id(entity.getId())
                 .creationDate(entity.getCreationDate())
                 .orderPositions(entity.getOrderPositions()
                         .stream()

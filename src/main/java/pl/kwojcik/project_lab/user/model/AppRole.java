@@ -17,4 +17,9 @@ public enum AppRole {
     public List<AppPermission> getPermissions() {
         return permissions;
     }
+
+    public String getRole() {
+        return "ROLE_" + name();
+    }
+
 }
