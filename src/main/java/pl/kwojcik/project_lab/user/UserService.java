@@ -1,6 +1,8 @@
 package pl.kwojcik.project_lab.user;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import pl.kwojcik.project_lab.gen.api.dto.CreateUserCmdDTO;
 import pl.kwojcik.project_lab.user.model.AppRole;
 import pl.kwojcik.project_lab.user.model.UserEntity;
@@ -30,15 +33,18 @@ public class UserService implements UserDetailsService {
         return new AppUser(user.getUsername(), user.getPasswordHash(), user.getRole());
     }
 
-    @PreAuthorize("cmd.role.name().equals('CUSTOMER') or hasAnyRole('ADMIN')")
-    public UserDetails createUser(CreateUserCmdDTO cmd) {
+    @PreAuthorize("#createUserCmdDTO.role.name().equals('CUSTOMER') or hasAnyRole('ADMIN')")
+    public UserDetails createUser(@P("createUserCmdDTO") CreateUserCmdDTO cmd) {
         return this.createUserNoAuthChecked(cmd);
     }
 
-    public UserDetails createUserNoAuthChecked(CreateUserCmdDTO cmd) {
-        var passwHash = passwordEncoder.encode(cmd.getPassword());
-        var appRole = AppRole.valueOf(cmd.getRole().name());
-        var user = new UserEntity(cmd.getUsername(), passwHash, appRole);
+    public UserDetails createUserNoAuthChecked( CreateUserCmdDTO createUserCmdDTO) {
+        if (userRepository.existsByUsername(createUserCmdDTO.getUsername())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+        var passwHash = passwordEncoder.encode(createUserCmdDTO.getPassword());
+        var appRole = AppRole.valueOf(createUserCmdDTO.getRole().name());
+        var user = new UserEntity(createUserCmdDTO.getUsername(), passwHash, appRole);
         var createdUser = this.userRepository.save(user);
         return mapUser(createdUser);
     }

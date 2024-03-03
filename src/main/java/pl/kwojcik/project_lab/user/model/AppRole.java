@@ -1,7 +1,10 @@
 package pl.kwojcik.project_lab.user.model;
 
+import lombok.Getter;
+
 import java.util.List;
 
+@Getter
 public enum AppRole {
 
     ADMIN(AppPermission.ORDER_VIEW, AppPermission.PRODUCT_MODIFY, AppPermission.PRODUCT_READ, AppPermission.ADMIN_USER_CREATE),
@@ -12,10 +15,6 @@ public enum AppRole {
 
     AppRole(AppPermission... permissions) {
         this.permissions = List.of(permissions);
-    }
-
-    public List<AppPermission> getPermissions() {
-        return permissions;
     }
 
     public String getRole() {

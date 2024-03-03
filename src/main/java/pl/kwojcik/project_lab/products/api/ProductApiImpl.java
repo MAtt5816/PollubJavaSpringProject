@@ -1,7 +1,9 @@
 package pl.kwojcik.project_lab.products.api;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 import pl.kwojcik.project_lab.gen.api.ProductsApi;
 import pl.kwojcik.project_lab.gen.api.dto.ProductDTO;

@@ -202,10 +202,9 @@ components:
       properties:
         username:
           type: string
-          maxLength: 100
         password:
           type: string
-          minLength: 100
+          minLength: 3
     UserRole:
       type: string
       enum:
@@ -268,6 +267,8 @@ components:
         name:
           type: string
           maxLength: 255
+          minLength: 3
+          nullable: false
         price:
           type: number
           format: float64
@@ -275,7 +276,6 @@ components:
           type: string
           maxLength: 30000
       required:
-        - id
         - name
         - price
         - description
