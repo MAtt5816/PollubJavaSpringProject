@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// #Zadanie_1__9
+//start L1 Facade
 @Transactional
 @Service
 public class OrderService {

@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import pl.kwojcik.project_lab.gen.api.dto.CreateUserCmdDTO;
 import pl.kwojcik.project_lab.user.model.AppRole;
 import pl.kwojcik.project_lab.user.model.UserEntity;
+import pl.kwojcik.project_lab.user.model.UserEntityBuilder;
 
 @Service
 @Transactional(isolation = Isolation.SERIALIZABLE)
@@ -44,7 +45,11 @@ public class UserService implements UserDetailsService {
         }
         var passwHash = passwordEncoder.encode(createUserCmdDTO.getPassword());
         var appRole = AppRole.valueOf(createUserCmdDTO.getRole().name());
-        var user = new UserEntity(createUserCmdDTO.getUsername(), passwHash, appRole);
+        var user = UserEntityBuilder.newUser()
+                .setRole(appRole)
+                .setUsername(createUserCmdDTO.getUsername())
+                .setPasswordHash(passwHash)
+                .build();
         var createdUser = this.userRepository.save(user);
         return mapUser(createdUser);
     }

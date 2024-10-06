@@ -8,7 +8,9 @@ import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import pl.kwojcik.project_lab.user.model.UserEntity;
+import pl.kwojcik.project_lab.utils.PriceCalculable;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Set;
 
@@ -16,7 +18,9 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class OrderEntity {
+// #Zadanie_1__6 Composite (using interface PriceCalculable)
+//start L1 Composite
+public class OrderEntity implements PriceCalculable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +35,14 @@ public class OrderEntity {
     public OrderEntity(Set<OrderPositionEntity> orderPositions, UserEntity customer) {
         this.orderPositions = orderPositions;
         this.customer = customer;
+    }
+
+    @Override
+    public BigDecimal calculatePrice() {
+        var sum = BigDecimal.ZERO;
+        for (var orderPosition : orderPositions) {
+            sum = sum.add(orderPosition.calculatePrice());
+        }
+        return sum;
     }
 }

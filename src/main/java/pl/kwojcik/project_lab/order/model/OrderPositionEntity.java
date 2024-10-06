@@ -4,11 +4,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.kwojcik.project_lab.products.ProductEntity;
+import pl.kwojcik.project_lab.utils.PriceCalculable;
+
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @Entity
-public class OrderPositionEntity {
+public class OrderPositionEntity implements PriceCalculable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +27,10 @@ public class OrderPositionEntity {
         this.productAmount = productAmount;
         this.product = product;
         this.order = order;
+    }
+
+    @Override
+    public BigDecimal calculatePrice() {
+        return product.calculatePrice().multiply(BigDecimal.valueOf(productAmount));
     }
 }

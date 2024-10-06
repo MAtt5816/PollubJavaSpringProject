@@ -12,7 +12,7 @@
         <openapi-generator-maven-plugin.version>6.0.1</openapi-generator-maven-plugin.version>
         <java.version>17</java.version>
         <spring.boot.version>3.2.3</spring.boot.version>
-        <projectlombok.version>1.18.24</projectlombok.version> <!-- Adjust lombok version if needed -->
+        <projectlombok.version>1.18.32</projectlombok.version> <!-- Adjust lombok version if needed -->
         <postgresql.version>42.3.1</postgresql.version> <!-- Adjust PostgreSQL version if needed -->
     </properties>
 
