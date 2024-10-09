@@ -1,12 +1,15 @@
 package pl.kwojcik.project_lab.order.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import pl.kwojcik.project_lab.order.OrderStateVisitor;
+import pl.kwojcik.project_lab.order.orderStates.InProcessOrderState;
+import pl.kwojcik.project_lab.order.orderStates.OrderState;
+import pl.kwojcik.project_lab.order.priceStrategies.PriceStrategy;
 import pl.kwojcik.project_lab.user.model.UserEntity;
 import pl.kwojcik.project_lab.utils.PriceCalculable;
 
@@ -32,17 +35,37 @@ public class OrderEntity implements PriceCalculable {
     @Fetch(FetchMode.JOIN)
     private UserEntity customer;
 
+    @Transient
+    private OrderState state;
+    @Transient
+    private PriceStrategy priceStrategy;
+
     public OrderEntity(Set<OrderPositionEntity> orderPositions, UserEntity customer) {
         this.orderPositions = orderPositions;
         this.customer = customer;
+        this.state = new InProcessOrderState(this);
+    }
+
+    public void changeState(OrderState state) {
+        this.state = state;
+    }
+
+    public void OnComplete() {
+        this.state.onComplete();
+    }
+
+    public void OnCancel() {
+        this.state.onCancel();
     }
 
     @Override
     public BigDecimal calculatePrice() {
-        var sum = BigDecimal.ZERO;
-        for (var orderPosition : orderPositions) {
-            sum = sum.add(orderPosition.calculatePrice());
-        }
-        return sum;
+        this.CheckStrategy();
+        return priceStrategy.calculatePrice(orderPositions.iterator());
+    }
+
+    private void CheckStrategy() {
+        var visitor = new OrderStateVisitor();
+        this.priceStrategy = visitor.getProperStrategy(this.state);
     }
 }

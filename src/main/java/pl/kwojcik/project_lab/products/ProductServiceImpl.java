@@ -2,6 +2,8 @@ package pl.kwojcik.project_lab.products;
 
 import pl.kwojcik.project_lab.gen.api.dto.ProductDTO;
 import pl.kwojcik.project_lab.products.dao.ProductRepository;
+import pl.kwojcik.project_lab.products.productMappers.ProductNoDescMapper;
+import pl.kwojcik.project_lab.products.productMappers.ProductWithDescMapper;
 
 import java.util.List;
 
@@ -55,12 +57,11 @@ class ProductServiceImpl implements ProductService {
     }
 
     private ProductEntity mapProduct(ProductDTO dto) {
-        var entity = new ProductEntity();
-
-        entity.setId(dto.getId());
-        entity.setName(dto.getName());
-        entity.setDescription(dto.getDescription());
-        entity.setPrice(dto.getPrice());
-        return entity;
+        if (dto.getDescription().isEmpty()) {
+            return new ProductNoDescMapper().map(dto);
+        }
+        else {
+            return new ProductWithDescMapper().map(dto);
+        }
     }
 }

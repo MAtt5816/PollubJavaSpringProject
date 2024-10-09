@@ -6,6 +6,9 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.kwojcik.project_lab.products.dao.ProductEntityMemento;
+import pl.kwojcik.project_lab.utils.Cacheable;
+import pl.kwojcik.project_lab.utils.Memento;
 import pl.kwojcik.project_lab.utils.PriceCalculable;
 
 import java.math.BigDecimal;
@@ -16,7 +19,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 // #Zadanie__1_4 Prototype (inteface Clonable)
 //start L1 Prototype
-public class ProductEntity implements Cloneable, PriceCalculable {
+public class ProductEntity implements Cloneable, PriceCalculable, Cacheable {
     @Id
     @GeneratedValue
     private Long id;
@@ -36,5 +39,19 @@ public class ProductEntity implements Cloneable, PriceCalculable {
     @Override
     public BigDecimal calculatePrice() {
         return price;
+    }
+
+    @Override
+    public Memento cache() {
+        return new ProductEntityMemento(this.clone());
+    }
+
+    @Override
+    public void restore(Memento memento) {
+        var productEntity = ((ProductEntityMemento) memento).state;
+        this.id = productEntity.getId();
+        this.name = productEntity.getName();
+        this.price = productEntity.getPrice();
+        this.description = productEntity.getDescription();
     }
 }
