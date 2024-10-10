@@ -1,13 +1,15 @@
 package pl.kwojcik.project_lab.products.productMappers;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import pl.kwojcik.project_lab.gen.api.dto.ProductDTO;
-import pl.kwojcik.project_lab.products.ProductEntity;
-
 public class ProductNoDescMapper extends ProductMapper {
+    private final String NO_DESCRIPTION = "No description";
+
     @Override
     protected void mapDescription(String description) {
+        // #Zadanie_3__9
+        //start L3 wyeliminuj magiczne liczby
+        /*
         super.entity.setDescription("No description");
+        */
+        super.entity.setDescription(NO_DESCRIPTION);
     }
 }

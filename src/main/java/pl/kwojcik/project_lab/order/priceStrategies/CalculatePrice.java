@@ -1,6 +1,7 @@
 package pl.kwojcik.project_lab.order.priceStrategies;
 
 import pl.kwojcik.project_lab.order.model.OrderPositionEntity;
+import pl.kwojcik.project_lab.products.DiscountedProductEntity;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -20,5 +21,14 @@ public class CalculatePrice extends PriceStrategy {
         } while (iterator.hasNext());
 
         return sum;
+    }
+
+    @Override
+    public void setDiscount(Iterator<OrderPositionEntity> iterator, BigDecimal discountPercent) {
+        do {
+            var orderPosition = iterator.next();
+            var product = orderPosition.getProduct();
+            ((DiscountedProductEntity) product).setDiscountPercent(discountPercent);
+        } while (iterator.hasNext());
     }
 }

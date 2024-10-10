@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 
 // #Zadanie_2__9 Template
 //start L2 Template
+// #Zadanie_3__2
+//start L3 Odwracania zależności
 public abstract class ProductMapper {
     protected ProductEntity entity;
 

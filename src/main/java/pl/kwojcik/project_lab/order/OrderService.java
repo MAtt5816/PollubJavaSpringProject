@@ -15,6 +15,7 @@ import pl.kwojcik.project_lab.user.model.AppPermission;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 // #Zadanie_1__9
@@ -90,4 +91,50 @@ public class OrderService {
         return dto;
     }
 
+    // #Zadanie_3__5
+    //start L3 dostosuj długości metod w programie, żeby nie miały więcej niż 20 linii
+    // #Zadanie_3__6
+    //start L3 dostosuj funkcje tak by spełniały tylko jedną rolę
+    // #Zadanie_3__8
+    //start L3 dostosuj funkcje tak, by przyjmowały maksymalnie 3 argumenty
+
+    // !!! OrderOperation split to mapToOrderDTO & createOrder methods
+
+    /*
+    @Secured({AppPermission.ROLE_ORDER_VIEW, AppPermission.ROLE_ORDER_MODIFY})
+    public OrderDTO OrderOperation(NewOrderDTO newOrderDTO, Authentication auth, boolean doCreate, Optional<OrderEntity> entityToMap) {
+        OrderEntity entity;
+
+        if (doCreate) {
+            var customer = userRepository.findByUsername(auth.getName())
+                    .orElseThrow();
+
+            var order = new OrderEntity();
+            var orderPositions = newOrderDTO.getOrderPositions()
+                    .stream()
+                    .map(op -> mapToOrderPosition(op, order))
+                    .collect(Collectors.toCollection(HashSet::new));
+            order.setOrderPositions(orderPositions);
+            order.setCustomer(customer);
+
+            entity = orderRepository.save(order);
+        }
+        else {
+            entity = entityToMap.orElse(new OrderEntity());
+        }
+
+        return  new OrderDTO()
+                .id(entity.getId())
+                .creationDate(entity.getCreationDate())
+                .orderPositions(entity.getOrderPositions()
+                        .stream()
+                        .map(op -> new OrderPositionDTO()
+                                .amount(op.getProductAmount())
+                                .productId(op.getProduct().getId())
+                        )
+                        .toList()
+                )
+                .customerId(entity.getCustomer().getId());
+    }
+     */
 }

@@ -9,4 +9,5 @@ import java.util.Iterator;
 //start L2 Strategy
 public abstract class PriceStrategy {
     public abstract BigDecimal calculatePrice(Iterator<OrderPositionEntity> orderPostionIterator);
+    public abstract void setDiscount(Iterator<OrderPositionEntity> iterator, BigDecimal discountPercent);
 }
