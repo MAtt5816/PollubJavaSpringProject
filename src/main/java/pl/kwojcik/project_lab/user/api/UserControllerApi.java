@@ -9,6 +9,8 @@ import pl.kwojcik.project_lab.gen.api.UserApi;
 import pl.kwojcik.project_lab.gen.api.dto.CreateUserCmdDTO;
 import pl.kwojcik.project_lab.user.UserService;
 
+import java.math.BigDecimal;
+
 @RestController
 public class UserControllerApi implements UserApi {
     private final UserService userService;
@@ -23,5 +25,11 @@ public class UserControllerApi implements UserApi {
         }
         userService.createUser(createUserCmdDTO);
         return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity<BigDecimal> checkUserDiscount(Long id){
+        var user = userService.getUserById(id);
+        BigDecimal discount = userService.checkUserDiscount(user);
+        return ResponseEntity.ok(discount);
     }
 }

@@ -1,5 +1,6 @@
 package pl.kwojcik.project_lab.user;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
@@ -16,6 +17,8 @@ import pl.kwojcik.project_lab.user.model.AppRole;
 import pl.kwojcik.project_lab.user.model.UserEntity;
 import pl.kwojcik.project_lab.user.model.UserEntityBuilder;
 
+import java.math.BigDecimal;
+
 @Service
 @Transactional(isolation = Isolation.SERIALIZABLE)
 public class UserService implements UserDetailsService {
@@ -25,6 +28,10 @@ public class UserService implements UserDetailsService {
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public UserEntity getUserById(Long id) {
+        return this.userRepository.getReferenceById(id);
     }
 
     @Override
@@ -58,4 +65,12 @@ public class UserService implements UserDetailsService {
         return new AppUser(user.getUsername(), user.getPasswordHash(), user.getRole());
     }
 
+    public BigDecimal checkUserDiscount(UserEntity user){
+        if (user instanceof CustomerUserEntity) {
+            return ((CustomerUserEntity) user).getDiscount();
+        }
+        else {
+            return new BigDecimal(0);
+        }
+    }
 }

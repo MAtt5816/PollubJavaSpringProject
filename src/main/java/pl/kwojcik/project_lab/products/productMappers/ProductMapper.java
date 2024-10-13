@@ -9,6 +9,10 @@ import java.math.BigDecimal;
 //start L2 Template
 // #Zadanie_3__2
 //start L3 Odwracania zależności
+// #Zadanie_3__4
+//start L3 znaczących (jasnych i zrozumiałych) nazw do klas, metod i zmiennych, znaczących w całym programie to samo
+
+//public abstract class Map {
 public abstract class ProductMapper {
     protected ProductEntity entity;
 
